@@ -70,11 +70,25 @@ clang++ -std=c++17 -O3 -DNDEBUG -Iinclude -Itests hw8/bench.cpp -o build/hw8_ben
 build/hw8_bench
 ```
 
-## GitHub Actions — pending
+## GitHub Actions — course validation
 
-To be completed after the `hw8` branch is pushed and tested; no CI result is
-claimed yet. Select **Actions → autograde → Run workflow → branch `hw8`**.
-Record the run link, the two **RollingCounter** test rows and
-`rolling_ns_per_op`. The course CI uses `g++ -std=c++17 -O2 -pthread` and reports
-one mean over 2,000,000 add/count pairs after 200,001 warmup pairs; it does not
-report percentiles. Its overall score also includes other assignments.
+[Run 40236259658](https://github.com/Alexiszcv/hft-cpp-starter-columbia/actions/runs/40236259658)
+tested `hw8@937cebc` on 2026-10-25 (UTC). Both unchanged course checks pass:
+
+| Course check | Result |
+|---|---:|
+| RollingCounter: window count | Pass, 10/10 |
+| RollingCounter: expiry as clock advances | Pass, 10/10 |
+
+**`rolling_ns_per_op`: 3.46273 ns per `add(t)` + `count(t)` pair.**
+The runner used GitHub-hosted Ubuntu 26.04 and
+`g++ -std=c++17 -O2 -pthread`. This is one mean over 2,000,000 pairs after
+200,001 warmup pairs, using a 1,000 ns window and advancing t by 1 ns per pair.
+CI does not report percentiles; the local measurements above provide the raw
+percentiles and explain their timer limitation. The CI mean and the local
+median of batch means use different machines, compilers and optimization flags;
+their difference is not an implementation speedup.
+
+HW8 earns all **20 internal autograder points**. The overall **50/230** includes
+other assignments and is not the HW8 grade. To reproduce the CI run, select
+**Actions → autograde → Run workflow → branch `hw8`** and inspect its Summary.
