@@ -52,6 +52,25 @@ fell from **32.520 to 12.457 ns/op**. With this compiler, array equality emitted
 a byte loop, while constant-size `memcmp` emitted two 64-bit comparisons.
 Hashing and linear probing stayed the same; no SIMD intrinsics were needed.
 
+## Course CI validation
+
+[GitHub Actions run 40150720884](https://github.com/Alexiszcv/hft-cpp-starter-columbia/actions/runs/40150720884)
+tested `hw7@56aa45a` on 2026-10-25 (UTC), using a GitHub-hosted Ubuntu 26.04
+runner and `g++ -std=c++17 -O2 -pthread`.
+
+| Course check | Result | CI ns/op | Timed operation |
+|---|---:|---:|---|
+| Book: best bid/ask + cancel | Pass, 12/12 | 1.11649 | `best_bid()` + `best_ask()` |
+| SymMap: put/get/absent | Pass, 8/8 | 8.34541 | One successful `get()` |
+
+The HW7 checks earn all 20 internal autograder points. The overall 50/230
+includes other assignments and is not the HW7 grade. Course tests were unchanged.
+Each CI metric is one mean over 2,000,000 operations after 200,001 warmup calls,
+using `steady_clock`. The book contains 2,000 orders across 50 prices; symbol
+queries cycle through eight keys. These are separate from the local medians
+above: different workloads, compilers and machines prevent a direct speedup
+comparison between CI and local results.
+
 ## Reproduce
 
 From this repository's root, finish compilation before timing:
@@ -72,9 +91,10 @@ clang++ -std=c++17 -O3 -DNDEBUG -Ibuild/hw7_before -Itests hw7/bench.cpp -o buil
 build/hw7_before/bench
 ```
 
-Both unchanged course checks pass (`book_bbo`, `symmap`). Additional local
-checks passed with UBSan: 20,000 random book updates and 20,000 symbol operations
-against reference models, empty sides, band limits, repeated IDs, aggregation,
-16-character keys, collisions and a full table. Course tests were not modified.
-Results vary across runs and machines; the course's BBO metric times bid **plus**
-ask, while the comparison above times best bid alone.
+For CI, select **Actions → autograde → Run workflow → branch `hw7`**,
+then inspect that run's Summary.
+
+Additional local checks passed with UBSan: 20,000 random book updates and 20,000
+symbol operations against reference models, empty sides, band limits, repeated
+IDs, aggregation, 16-character keys, collisions and a full table. Results vary
+across runs and machines.
