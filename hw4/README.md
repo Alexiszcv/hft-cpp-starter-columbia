@@ -1,7 +1,7 @@
 # HW4 — Course autograder validation
 
 This note supplements the original HW4 submission. `include/pool.hpp` is copied
-unchanged from that submission's `pool.hpp`; no allocator redesign was needed.
+unchanged from the existing local `HW/HW4/pool.hpp`; no redesign was needed.
 The pool owns one buffer and stores its free-list links inside unused slots.
 `alloc()` removes the first free slot; `free()` returns it. Both are O(1).
 
@@ -29,5 +29,35 @@ allocator and virtual-call comparisons.
 
 ## GitHub Actions
 
-The consolidated CI run and its measured results will be recorded here once
-validation completes. Local tests do not substitute for an actual CI result.
+[Run 40237655710](https://github.com/Alexiszcv/hft-cpp-starter-columbia/actions/runs/40237655710)
+validated `main@c65be5f` on 2026-10-25 (UTC), on GitHub-hosted Ubuntu 26.04
+with `g++ -std=c++17 -O2 -pthread`.
+
+| HW4 course check | Result |
+|---|---:|
+| Pool: basic alloc | Pass, 5/5 |
+| Pool: capacity limit | Pass, 5/5 |
+| Pool: slot reuse | Pass, 5/5 |
+| Pool: churn pattern | Pass, 10/10 |
+
+**`pool_ns_per_op`: 0.955937 ns per alloc/free pair.**
+All four checks pass, earning 25/25 internal autograder points for HW4's pool.
+This validates the pool portion; the rest of HW4 is covered by the original
+submission and write-up.
+
+The same run also passes both HW7 checks (20/20) and both HW8 checks (20/20):
+
+| Metric | ns/op | Timed operation |
+|---|---:|---|
+| `book_bbo_ns_per_op` | 1.01750 | `best_bid()` + `best_ask()` |
+| `symmap_get_ns_per_op` | 11.54390 | One successful lookup among eight symbols |
+| `rolling_ns_per_op` | 3.79156 | One `add(t)` + `count(t)` pair |
+
+These eight checks earn **65/65 internal points**. The overall **95/230** also
+includes other assignments and project components; it is not the combined
+CourseWorks grade. Earlier HW7/HW8 reports retain their own run references and
+measurements. Differences between runs are not evidence of code changes or a
+speedup.
+
+Use **Actions → autograde → Run workflow → branch `main`** for the cumulative
+report. The `hw7` and `hw8` branches remain individual homework snapshots.
