@@ -1,0 +1,42 @@
+c++ -std=c++17 -O2 -pthread -Iinclude -Itests hw11/bench.cpp      -o /tmp/fix_bench && /tmp/fix_bench
+Validated 256 varied orders for all three parsers and the batch API.
+One operation = frame + parse one message; 21901 bytes/batch, 2000 batches/run, 200 warmup batches, median of 11 runs.
+Counter: arm64 virtual timer ticks, 24000000 Hz; these are NOT CPU cycles. Use ns/op as the time metric.
+RUN 1 naive_split_map ns/op=2044.939 ticks/op=49.078
+RUN 1 before_strtod ns/op=217.855 ticks/op=5.229
+RUN 1 after_decimal ns/op=182.070 ticks/op=4.370
+RUN 2 before_strtod ns/op=221.052 ticks/op=5.305
+RUN 2 after_decimal ns/op=188.308 ticks/op=4.519
+RUN 2 naive_split_map ns/op=2047.145 ticks/op=49.131
+RUN 3 after_decimal ns/op=180.003 ticks/op=4.320
+RUN 3 naive_split_map ns/op=2056.335 ticks/op=49.352
+RUN 3 before_strtod ns/op=219.960 ticks/op=5.278
+RUN 4 naive_split_map ns/op=2042.046 ticks/op=49.009
+RUN 4 before_strtod ns/op=220.230 ticks/op=5.285
+RUN 4 after_decimal ns/op=177.092 ticks/op=4.250
+RUN 5 before_strtod ns/op=215.537 ticks/op=5.173
+RUN 5 after_decimal ns/op=177.185 ticks/op=4.252
+RUN 5 naive_split_map ns/op=2059.831 ticks/op=49.436
+RUN 6 after_decimal ns/op=177.209 ticks/op=4.253
+RUN 6 naive_split_map ns/op=2047.027 ticks/op=49.128
+RUN 6 before_strtod ns/op=217.713 ticks/op=5.225
+RUN 7 naive_split_map ns/op=2159.283 ticks/op=51.823
+RUN 7 before_strtod ns/op=218.179 ticks/op=5.236
+RUN 7 after_decimal ns/op=177.373 ticks/op=4.257
+RUN 8 before_strtod ns/op=216.732 ticks/op=5.201
+RUN 8 after_decimal ns/op=177.461 ticks/op=4.259
+RUN 8 naive_split_map ns/op=2043.610 ticks/op=49.047
+RUN 9 after_decimal ns/op=179.456 ticks/op=4.307
+RUN 9 naive_split_map ns/op=2055.649 ticks/op=49.336
+RUN 9 before_strtod ns/op=217.823 ticks/op=5.228
+RUN 10 naive_split_map ns/op=2030.224 ticks/op=48.725
+RUN 10 before_strtod ns/op=219.413 ticks/op=5.266
+RUN 10 after_decimal ns/op=178.786 ticks/op=4.291
+RUN 11 before_strtod ns/op=219.838 ticks/op=5.276
+RUN 11 after_decimal ns/op=179.029 ticks/op=4.297
+RUN 11 naive_split_map ns/op=2036.386 ticks/op=48.873
+naive_split_map: 2047.027 ns/op, 49.128 ticks/op, 0.489 million messages/s, 41.793 MB/s
+before_strtod: 218.179 ns/op, 5.236 ticks/op, 4.583 million messages/s, 392.113 MB/s
+after_decimal: 178.786 ns/op, 4.291 ticks/op, 5.593 million messages/s, 478.510 MB/s
+Speedup vs naive: 11.450x
+Speedup vs before: 1.220x
