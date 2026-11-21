@@ -2,7 +2,7 @@
 CXX      ?= g++
 CXXFLAGS ?= -std=c++17 -O2 -pthread -Iinclude -Itests
 
-.PHONY: test clean pool book fix fix-check fix-bench u64toa rolling spsc client register run
+.PHONY: test clean pool book fix fix-check fix-bench u64toa u64toa-check u64toa-bench rolling spsc client register run
 
 test:                      ## run the full autograder (grades what you've implemented)
 	python3 tests/run_ci.py
@@ -14,10 +14,12 @@ fix:     ; $(CXX) $(CXXFLAGS) tests/fix_test.cpp     -o /tmp/fix     && /tmp/fix
 fix-check: ; $(CXX) $(CXXFLAGS) hw11/check.cpp      -o /tmp/fix_check && /tmp/fix_check
 fix-bench: ; $(CXX) $(CXXFLAGS) hw11/bench.cpp      -o /tmp/fix_bench && /tmp/fix_bench
 u64toa:  ; $(CXX) $(CXXFLAGS) tests/u64toa_test.cpp  -o /tmp/u64toa  && /tmp/u64toa
+u64toa-check: ; $(CXX) $(CXXFLAGS) hw12/check.cpp   -o /tmp/u64toa_check && /tmp/u64toa_check
+u64toa-bench: ; $(CXX) $(CXXFLAGS) hw12/bench.cpp   -o /tmp/u64toa_bench && /tmp/u64toa_bench
 rolling: ; $(CXX) $(CXXFLAGS) tests/rolling_counter_test.cpp -o /tmp/rolling && /tmp/rolling
 spsc:    ; $(CXX) $(CXXFLAGS) tests/spsc_correctness.cpp -o /tmp/spsc && /tmp/spsc
 
-clean:   ; rm -f /tmp/pool /tmp/book /tmp/fix /tmp/fix_check /tmp/fix_bench /tmp/u64toa /tmp/rolling /tmp/spsc report.json
+clean:   ; rm -f /tmp/pool /tmp/book /tmp/fix /tmp/fix_check /tmp/fix_bench /tmp/u64toa /tmp/u64toa_check /tmp/u64toa_bench /tmp/rolling /tmp/spsc report.json
 
 # ── Arena: build the C++ client, register your team, run your bot ─────────────
 ARENA ?= https://algoarenafin.duckdns.org
